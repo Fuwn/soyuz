@@ -8,6 +8,7 @@
 
 #include "soyuz/library.hh"
 #include "soyuz/soyuz.hh"
+#include "soyuz/windows.hh"
 
 static auto enum_windows_proc(HWND hwnd, LPARAM lparam) -> BOOL {
   int length = GetWindowTextLength(hwnd);
