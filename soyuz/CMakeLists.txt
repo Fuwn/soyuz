@@ -1,5 +1,7 @@
-add_executable(${PROJECT_NAME}
+add_executable(${PROJECT_NAME} WIN32
+  tray.cc
   library.cc
+  ../resource/resource.rc
   soyuz.cc
   windows.cc
 )
