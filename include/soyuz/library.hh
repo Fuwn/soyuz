@@ -11,8 +11,12 @@
 #define NT_SUCCESS(status) (status >= 0)
 #define STATUS_INFO_LENGTH_MISMATCH ((NTSTATUS)0xC0000004L)
 
+namespace soyuz {
+
 static auto enum_windows_proc(HWND hwnd, LPARAM lparam) -> BOOL;
 auto find_lunar() -> DWORD;
 auto delete_handle(DWORD pid) -> int;
+
+}
 
 #endif //SOYUZ_LIBRARY_HH
