@@ -24,6 +24,16 @@ Soon to come
 - Tray support
 - "Startup" support
 
+Temporary "Startup" Support Workaround
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+1. Create a shortcut for the Soyuz executable
+2. Move the shortcut to
+   
+   :code:`C:\Users\<username>\AppData\Roaming\Microsoft\Windows\StartMenu\Programs\Startup`
+   
+   (replace :code:`<username>` with your Windows user account's username)
+   
 License
 -------
 
