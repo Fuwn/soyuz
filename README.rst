@@ -21,7 +21,6 @@ Limitations
 Soon to come
 ------------
 
-- Tray support
 - "Startup" support
 
 Temporary "Startup" Support Workaround
