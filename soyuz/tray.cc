@@ -1,9 +1,12 @@
 // Copyright (C) 2021-2021 Fuwn
 // SPDX-License-Identifier: GPL-3.0-only
 
-#include "soyuz/tray.hh"
+#include <sstream>
+
+#include "soyuz/library.hh"
 #include "soyuz/resource.hh"
 #include "soyuz/soyuz.hh"
+#include "soyuz/tray.hh"
 
 UINT WM_TASKBAR =   0;
 HWND window;
@@ -11,9 +14,7 @@ HMENU menu;
 NOTIFYICONDATA data;
 TCHAR tip[64] =     TEXT(WINDOW_TRAY_NAME);
 char class_name[] = WINDOW_TRAY_NAME;
-std::vector<std::string> logs = {
-  "lunar client has been hooked, you may now close this window",
-};
+std::vector<std::string> logs;
 
 auto WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) -> LRESULT { // CALLBACK
   if (message == WM_TASKBAR && !IsWindowVisible(window)) {
@@ -128,7 +129,12 @@ void InitNotifyIconData() {
 namespace soyuz {
 
 auto log(const std::string &message) -> void {
-  LOG(message)
+  if (logs.size() == 16) { logs.erase(logs.begin()); }
+
+  std::ostringstream ss;
+  ss << "[" << current_date_time() << "] " << message;
+
+  LOG(ss.str()) write_log_file(ss.str());
   RedrawWindow(window, nullptr, nullptr, RDW_INVALIDATE | RDW_UPDATENOW);
 }
 

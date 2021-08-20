@@ -19,6 +19,8 @@ extern char class_name[];
 extern std::vector<std::string> logs;
 
 auto WinMain(HINSTANCE instance, HINSTANCE previous, LPSTR argument, int show) -> int { // WINAPI
+  soyuz::init_log_file();
+
   MSG messages;
   WNDCLASSEX wincl;
   WM_TASKBAR = RegisterWindowMessageA("TaskbarCreated");
@@ -29,22 +31,20 @@ auto WinMain(HINSTANCE instance, HINSTANCE previous, LPSTR argument, int show) -
   wincl.style = CS_DBLCLKS;
   wincl.cbSize = sizeof(WNDCLASSEX);
 
-  wincl.hIcon = LoadIcon (GetModuleHandle(nullptr), MAKEINTRESOURCE(ICO1));
-  wincl.hIconSm = LoadIcon (GetModuleHandle(nullptr), MAKEINTRESOURCE(ICO1));
-  wincl.hCursor = LoadCursor (nullptr, IDC_ARROW);
+  wincl.hIcon = LoadIcon(GetModuleHandle(nullptr), MAKEINTRESOURCE(ICO1));
+  wincl.hIconSm = LoadIcon(GetModuleHandle(nullptr), MAKEINTRESOURCE(ICO1));
+  wincl.hCursor = LoadCursor(nullptr, IDC_ARROW);
   wincl.lpszMenuName = nullptr;
   wincl.cbClsExtra = 0;
   wincl.cbWndExtra = 0;
   wincl.hbrBackground = (HBRUSH)(CreateSolidBrush(RGB(255, 255, 255)));
-  if (!RegisterClassEx (&wincl)) {
-    return 0;
-  }
+  if (!RegisterClassEx(&wincl)) { return 0; }
 
   window = CreateWindowEx(
     0,
     class_name,
     class_name,
-    WS_OVERLAPPEDWINDOW,
+    WS_OVERLAPPEDWINDOW ^ WS_THICKFRAME,
     CW_USEDEFAULT,
     CW_USEDEFAULT,
     544,
@@ -63,7 +63,7 @@ auto WinMain(HINSTANCE instance, HINSTANCE previous, LPSTR argument, int show) -
     if (pid == 0 || pid == 3435973836) {
       soyuz::log("could not locate lunar client");
 
-      exit(1);
+      soyuz::exit(1);
     }
     std::stringstream ss;
     ss << "located lunar client: pid " << pid;
@@ -85,5 +85,6 @@ auto WinMain(HINSTANCE instance, HINSTANCE previous, LPSTR argument, int show) -
   soyuz.request_stop(); soyuz.join();
 
   soyuz::log("exiting");
+  soyuz::close_log_file();
   return (int)messages.wParam;
 }
