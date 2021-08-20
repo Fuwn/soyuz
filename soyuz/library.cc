@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 #include <cstdio>
+#include <fstream>
 #include <memory>
 #include <sstream>
 #include <string>
@@ -13,6 +14,8 @@
 #include "soyuz/windows.hh"
 
 namespace soyuz {
+
+std::ofstream log_file("soyuz.log");
 
 static auto enum_windows_proc(HWND hwnd, LPARAM lparam) -> BOOL {
   int length = GetWindowTextLength(hwnd);
@@ -42,6 +45,7 @@ auto find_lunar() -> DWORD {
 
   DWORD pid;
   GetWindowThreadProcessId(window, &pid);
+  log("hooked lunar client"); log("you may now close this window");
   return pid;
 }
 
@@ -133,6 +137,40 @@ auto delete_handle(DWORD pid) -> int {
   }
 
   return 0;
+}
+
+auto write_log_file(const std::string &message) -> void {
+  log_file << message << std::endl;
+}
+
+auto init_log_file() -> void {
+  if (!log_file.is_open()) {
+    soyuz::log("could not open 'soyuz.log'");
+    soyuz::log("proceeding without logging to file");
+
+    return;
+  }
+
+  soyuz::log("opened 'soyuz.log'");
+}
+
+auto close_log_file() -> void {
+  soyuz::log("closing 'soyuz.log'"); log_file.close();
+}
+
+auto exit(int exit_code) -> void {
+  if (log_file.is_open()) { close_log_file(); }
+  ::exit(exit_code);
+}
+
+auto current_date_time() -> std::string {
+  time_t now = time(nullptr);
+  struct tm t_struct{};
+  char buffer[80];
+  localtime_s(&t_struct, &now); // t_struct = *localtime(&now);
+  strftime(buffer, sizeof(buffer), "%Y-%m-%d.%X", &t_struct);
+
+  return buffer;
 }
 
 }
