@@ -4,3 +4,4 @@
 # CMake
 /cmake-build-debug/
 /build/
+/deps/
