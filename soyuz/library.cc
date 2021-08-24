@@ -45,7 +45,6 @@ auto find_lunar() -> DWORD {
 
   DWORD pid;
   GetWindowThreadProcessId(window, &pid);
-  log("hooked lunar client"); log("you may now close this window");
   return pid;
 }
 
