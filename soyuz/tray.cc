@@ -1,6 +1,7 @@
 // Copyright (C) 2021-2021 Fuwn
 // SPDX-License-Identifier: GPL-3.0-only
 
+#include <fmt/format.h>
 #include <sstream>
 
 #include "soyuz/library.hh"
@@ -131,10 +132,9 @@ namespace soyuz {
 auto log(const std::string &message) -> void {
   if (logs.size() == 16) { logs.erase(logs.begin()); }
 
-  std::ostringstream ss;
-  ss << "[" << current_date_time() << "] " << message;
+  std::string to_log = fmt::format("[{}] {}", current_date_time(), message);
 
-  LOG(ss.str()) write_log_file(ss.str());
+  LOG(to_log.c_str()) write_log_file(to_log);
   RedrawWindow(window, nullptr, nullptr, RDW_INVALIDATE | RDW_UPDATENOW);
 }
 
