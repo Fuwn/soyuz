@@ -3,7 +3,7 @@
 
 #include <cstdio>
 #include <fmt/format.h>
-#include <fstream>
+#include <fmt/os.h>
 #include <memory>
 #include <string>
 #include <Windows.h>
@@ -15,7 +15,7 @@
 
 namespace soyuz {
 
-std::ofstream log_file("soyuz.log");
+fmt::ostream log_file = fmt::output_file("soyuz.log");
 
 static auto enum_windows_proc(HWND hwnd, LPARAM lparam) -> BOOL {
   int length = GetWindowTextLength(hwnd);
@@ -138,16 +138,16 @@ auto delete_handle(DWORD pid) -> int {
 }
 
 auto write_log_file(const std::string &message) -> void {
-  log_file << message << std::endl;
+  log_file.print("{}\n", message);
 }
 
 auto init_log_file() -> void {
-  if (!log_file.is_open()) {
-    soyuz::log("could not open 'soyuz.log'");
-    soyuz::log("proceeding without logging to file");
-
-    return;
-  }
+//  if (!log_file.is_open()) {
+//    soyuz::log("could not open 'soyuz.log'");
+//    soyuz::log("proceeding without logging to file");
+//
+//    return;
+//  }
 
   soyuz::log("opened 'soyuz.log'");
 }
@@ -157,7 +157,8 @@ auto close_log_file() -> void {
 }
 
 auto exit(int exit_code) -> void {
-  if (log_file.is_open()) { close_log_file(); }
+  // if (log_file.is_open()) { close_log_file(); }
+  close_log_file();
   ::exit(exit_code);
 }
 
