@@ -6,7 +6,11 @@ add_executable(${PROJECT_NAME} WIN32
   windows.cc
 )
 
-target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/include)
+target_include_directories(${PROJECT_NAME} PRIVATE
+  ${PROJECT_SOURCE_DIR}/include
+  ${PROJECT_SOURCE_DIR}/deps/include
+  ${PROJECT_SOURCE_DIR}/include/soyuz
+)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
   CXX_STANDARD 20
@@ -24,3 +28,5 @@ else()
   target_compile_options(${PROJECT_NAME} PUBLIC -Wall)
 endif()
 add_compile_options(-stdlib=libc++)
+
+target_include_directories(${PROJECT_NAME} PRIVATE ${fmt_SOURCE_DIR}/include)
