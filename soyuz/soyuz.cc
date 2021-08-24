@@ -19,7 +19,7 @@ extern TCHAR tip[64];
 extern char class_name[];
 extern std::vector<std::string> logs;
 
-auto WinMain(HINSTANCE instance, HINSTANCE previous, LPSTR argument, int show) -> int { // WINAPI
+auto WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int show) -> int { // WINAPI
   soyuz::init_log_file();
 
   MSG messages;
