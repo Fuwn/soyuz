@@ -3,6 +3,7 @@
 
 #pragma comment(lib, "ntdll.lib")
 
+#include <fmt/format.h>
 #include <thread>
 #include <Windows.h>
 
@@ -65,9 +66,7 @@ auto WinMain(HINSTANCE instance, HINSTANCE previous, LPSTR argument, int show) -
 
       soyuz::exit(1);
     }
-    std::stringstream ss;
-    ss << "located lunar client: pid " << pid;
-    soyuz::log(ss.str());
+    soyuz::log(fmt::format("located lunar client: pid {}", GetLastError()));
 
     while (!stop.stop_requested()) {
       if (soyuz::delete_handle(pid) == 1) {
