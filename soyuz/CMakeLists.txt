@@ -29,4 +29,5 @@ else()
 endif()
 add_compile_options(-stdlib=libc++)
 
-target_include_directories(${PROJECT_NAME} PRIVATE ${fmt_SOURCE_DIR}/include)
+find_package(fmt)
+target_link_libraries(${PROJECT_NAME} PRIVATE fmt)
