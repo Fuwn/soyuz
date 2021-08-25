@@ -5,7 +5,6 @@
 #include <fmt/format.h>
 #include <fstream>
 #include <memory>
-#include <sstream>
 #include <string>
 #include <Windows.h>
 
