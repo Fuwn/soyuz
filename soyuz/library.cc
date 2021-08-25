@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 #include <cstdio>
+#include <fmt/format.h>
 #include <fstream>
 #include <memory>
 #include <sstream>
@@ -56,9 +57,7 @@ auto delete_handle(DWORD pid) -> int {
     pid
   );
   if (!lunar) {
-    std::stringstream ss;
-    ss << "could not open handle to lunar client: " << GetLastError();
-    soyuz::log(ss.str());
+    soyuz::log(fmt::format("could not open handle to lunar client: {}", GetLastError()));
 
     return 1;
   }
