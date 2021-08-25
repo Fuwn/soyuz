@@ -23,9 +23,9 @@ target_compile_features(${PROJECT_NAME} PUBLIC
 )
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-  target_compile_options(${PROJECT_NAME} PUBLIC -W3)
+  target_compile_options(${PROJECT_NAME} PUBLIC /W4 /WX) # /Wall
 else()
-  target_compile_options(${PROJECT_NAME} PUBLIC -Wall)
+  target_compile_options(${PROJECT_NAME} PUBLIC -Wall -Wextra -pedantic -Werror)
 endif()
 add_compile_options(-stdlib=libc++)
 
