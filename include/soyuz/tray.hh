@@ -10,7 +10,7 @@
 #include <vector>
 #include <Windows.h>
 
-#define LOG(message) logs.push_back(message);
+#define LOG(message) logs.emplace_back(message);
 
 auto WindowProcedure(HWND, UINT, WPARAM, LPARAM) -> LRESULT; // CALLBACK
 auto minimize() -> void;
