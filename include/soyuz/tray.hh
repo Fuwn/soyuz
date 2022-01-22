@@ -12,7 +12,7 @@
 
 #define LOG(message) logs.emplace_back(message);
 
-auto WindowProcedure(HWND, UINT, WPARAM, LPARAM) -> LRESULT; // CALLBACK
+LRESULT CALLBACK WindowProcedure(HWND, UINT, WPARAM, LPARAM);
 auto minimize() -> void;
 auto restore() -> void;
 auto InitNotifyIconData() -> void;
