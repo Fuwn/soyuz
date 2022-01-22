@@ -17,7 +17,7 @@ TCHAR tip[64] =     TEXT(WINDOW_TRAY_NAME);
 char class_name[] = WINDOW_TRAY_NAME;
 std::vector<std::string> logs;
 
-auto WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) -> LRESULT { // CALLBACK
+LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) {
   if (message == WM_TASKBAR && !IsWindowVisible(window)) {
     minimize(); return 0;
   }

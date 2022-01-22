@@ -1,0 +1,27 @@
+# Reference: https://build-cpp.github.io/cmkr/cmake-toml
+
+[cmake]
+version = "3.15"
+cmkr-include = "cmake/cmkr/cmkr.cmake"
+
+[project]
+name = "soyuz"
+version = "1.1.1"
+description = "🚀 Discord RPC Blocker for Lunar Client"
+languages = ["CXX", "C"]
+
+[conditions]
+windows = "WIN32"
+msvc = "MSVC"
+
+[fetch-content]
+fmt = { git = "https://github.com/fmtlib/fmt", tag = "8.1.1" }
+
+[target.soyuz]
+type = "executable"
+windows.sources = ["soyuz/*.cc", "resource/*.rc"]
+private-include-directories = ["include/"]
+properties = { CXX_STANDARD = "20", CXX_STANDARD_REQUIRED = true, CMAKE_CXX_EXTENSIONS = false, WIN32_EXECUTABLE = true }
+compile-features = ["cxx_std_20", "cxx_return_type_deduction"]
+msvc.compile-options = ["/W4", "/WX"] # /Wall
+private-link-libraries = ["fmt::fmt"]
