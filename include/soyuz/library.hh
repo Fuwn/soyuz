@@ -20,7 +20,7 @@ namespace soyuz {
 //   high,   // red
 // };
 
-static auto enum_windows_proc(HWND hwnd, LPARAM lparam) -> BOOL;
+static BOOL CALLBACK enum_windows_proc(HWND hwnd, LPARAM lparam);
 auto find_lunar() -> DWORD;
 auto delete_handle(DWORD pid) -> int;
 auto write_log_file(const std::string &message) -> void;

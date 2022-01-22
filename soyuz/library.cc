@@ -17,7 +17,7 @@ namespace soyuz {
 
 fmt::ostream log_file = fmt::output_file("soyuz.log");
 
-static auto enum_windows_proc(HWND hwnd, LPARAM lparam) -> BOOL {
+static BOOL CALLBACK enum_windows_proc(HWND hwnd, LPARAM lparam) {
   int length = GetWindowTextLength(hwnd);
   auto title = new CHAR[length + 1];
   GetWindowText(hwnd, title, length);
