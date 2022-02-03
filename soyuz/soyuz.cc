@@ -1,6 +1,12 @@
 // Copyright (C) 2021-2021 Fuwn
 // SPDX-License-Identifier: GPL-3.0-only
 
+/**
+ * @file   soyuz.cc
+ * @author Fuwn
+ * @date   2021. August. 18.
+ */
+
 #include <soyuz/soyuz.hh>
 
 #pragma comment(lib, "ntdll.lib")
@@ -60,8 +66,13 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int show) {
   InitNotifyIconData();
   ShowWindow(window, show);
 
-  // https://medium.com/@vgasparyan1995/a-new-thread-in-c-20-jthread-ebd121ae8906
+  /**
+   * Launch a new thread to take care of everything important
+   *
+   * https://medium.com/@vgasparyan1995/a-new-thread-in-c-20-jthread-ebd121ae8906
+   */
   std::jthread soyuz {[](const std::stop_token &stop) -> void {
+    // Check if Lunar Client is open, if not; close Soyuz
     DWORD pid = soyuz::find_lunar();
     if (pid == 0 || pid == 3435973836) {
       soyuz::log("could not locate lunar client");
@@ -72,13 +83,19 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int show) {
     soyuz::log("hooked lunar client"); soyuz::log("you may now close this window");
 
     while (!stop.stop_requested()) {
-      pid = soyuz::find_lunar();
 
+      /**
+       * Check if Lunar Client is open before every `delete_handle` run, if not; timeout
+       *
+       * Thanks, @LorenzoHanssens (#1)
+       */
+      pid = soyuz::find_lunar();
       if (pid == 0 || pid == 3435973836) {
         soyuz::log("could not locate lunar client, waiting 10 seconds");
         std::this_thread::sleep_for(std::chrono::seconds(10));
       }
 
+      // If Lunar Client **is** open, close it's Discord IPC Named Pipe
       if (soyuz::delete_handle(pid) == 1) {
         soyuz::log("unable to close lunar client's discord ipc named pipe");
       }
