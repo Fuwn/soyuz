@@ -26,8 +26,8 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int show) {
 
   MSG messages;
   WNDCLASSEX wincl;
-  WM_TASKBAR = RegisterWindowMessageA("TaskbarCreated");
 
+  WM_TASKBAR = RegisterWindowMessageA("TaskbarCreated");
   wincl.hInstance = instance;
   wincl.lpszClassName = class_name;
   wincl.lpfnWndProc = WindowProcedure;
@@ -72,6 +72,13 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int show) {
     soyuz::log("hooked lunar client"); soyuz::log("you may now close this window");
 
     while (!stop.stop_requested()) {
+      pid = soyuz::find_lunar();
+
+      if (pid == 0 || pid == 3435973836) {
+        soyuz::log("could not locate lunar client, waiting 10 seconds");
+        std::this_thread::sleep_for(std::chrono::seconds(10));
+      }
+
       if (soyuz::delete_handle(pid) == 1) {
         soyuz::log("unable to close lunar client's discord ipc named pipe");
       }
