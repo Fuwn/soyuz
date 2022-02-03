@@ -25,13 +25,13 @@ namespace soyuz {
 //   high,   // red
 // };
 
-static BOOL CALLBACK enum_windows_proc(HWND hwnd, LPARAM lparam);
+static BOOL CALLBACK enum_windows_proc(HWND, LPARAM);
 auto find_lunar() -> DWORD;
-auto delete_handle(DWORD pid) -> int;
-auto write_log_file(const std::string &message) -> void;
+auto delete_handle(DWORD) -> int;
+auto write_log_file(const std::string &) -> void;
 auto init_log_file() -> void;
 auto close_log_file() -> void;
-auto exit(int exit_code) -> void;
+auto exit(int) -> void;
 // https://stackoverflow.com/a/10467633/14452787
 auto current_date_time() -> std::string;
 

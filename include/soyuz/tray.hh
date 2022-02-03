@@ -24,7 +24,7 @@ auto InitNotifyIconData() -> void;
 
 namespace soyuz {
 
-auto log(const std::string &message) -> void;
+auto log(const std::string &) -> void;
 
 }
 
