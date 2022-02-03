@@ -1,6 +1,12 @@
 // Copyright (C) 2021-2021 Fuwn
 // SPDX-License-Identifier: GPL-3.0-only
 
+/**
+ * @file   library.hh
+ * @author Fuwn
+ * @date   2021. August. 18.
+ */
+
 #ifndef SOYUZ_LIBRARY_HH
 #define SOYUZ_LIBRARY_HH
 #pragma once
