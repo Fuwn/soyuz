@@ -3,7 +3,6 @@
 
 #ifndef SOYUZ_SOYUZ_HH
 #define SOYUZ_SOYUZ_HH
-
 #pragma once
 
 #define LUNAR_WINDOW_NAME_BASE "Lunar Client ("
