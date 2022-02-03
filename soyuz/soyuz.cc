@@ -1,15 +1,17 @@
 // Copyright (C) 2021-2021 Fuwn
 // SPDX-License-Identifier: GPL-3.0-only
 
+#include <soyuz/soyuz.hh>
+
 #pragma comment(lib, "ntdll.lib")
 
 #include <fmt/format.h>
 #include <thread>
 #include <Windows.h>
 
-#include "soyuz/library.hh"
-#include "soyuz/resource.hh"
-#include "soyuz/tray.hh"
+#include <soyuz/library.hh>
+#include <soyuz/resource.hh>
+#include <soyuz/tray.hh>
 
 extern UINT WM_TASKBAR;
 extern HWND window;
@@ -59,7 +61,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int show) {
   ShowWindow(window, show);
 
   // https://medium.com/@vgasparyan1995/a-new-thread-in-c-20-jthread-ebd121ae8906
-  std::jthread soyuz {[](const std::stop_token& stop) -> void {
+  std::jthread soyuz {[](const std::stop_token &stop) -> void {
     DWORD pid = soyuz::find_lunar();
     if (pid == 0 || pid == 3435973836) {
       soyuz::log("could not locate lunar client");

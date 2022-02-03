@@ -3,7 +3,6 @@
 
 #ifndef SOYUZ_WINDOWS_HH
 #define SOYUZ_WINDOWS_HH
-
 #pragma once
 
 #include <Windows.h>

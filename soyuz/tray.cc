@@ -1,13 +1,14 @@
 // Copyright (C) 2021-2021 Fuwn
 // SPDX-License-Identifier: GPL-3.0-only
 
+#include <soyuz/tray.hh>
+
 #include <fmt/format.h>
 #include <sstream>
 
-#include "soyuz/library.hh"
-#include "soyuz/resource.hh"
-#include "soyuz/soyuz.hh"
-#include "soyuz/tray.hh"
+#include <soyuz/library.hh>
+#include <soyuz/resource.hh>
+#include <soyuz/soyuz.hh>
 
 UINT WM_TASKBAR =   0;
 HWND window;

@@ -3,7 +3,6 @@
 
 #ifndef SOYUZ_RESOURCE_HH
 #define SOYUZ_RESOURCE_HH
-
 #pragma once
 
 #include <shellapi.h>

@@ -3,7 +3,6 @@
 
 #ifndef SOYUZ_TRAY_HH
 #define SOYUZ_TRAY_HH
-
 #pragma once
 
 #include <string>
