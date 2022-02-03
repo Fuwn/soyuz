@@ -3,7 +3,6 @@
 
 #ifndef SOYUZ_LIBRARY_HH
 #define SOYUZ_LIBRARY_HH
-
 #pragma once
 
 #include <string>

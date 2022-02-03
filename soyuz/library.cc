@@ -1,6 +1,8 @@
 // Copyright (C) 2021-2021 Fuwn
 // SPDX-License-Identifier: GPL-3.0-only
 
+#include <soyuz/library.hh>
+
 #include <cstdio>
 #include <fmt/format.h>
 #include <fmt/os.h>
@@ -8,10 +10,9 @@
 #include <string>
 #include <Windows.h>
 
-#include "soyuz/library.hh"
-#include "soyuz/soyuz.hh"
-#include "soyuz/tray.hh"
-#include "soyuz/windows.hh"
+#include <soyuz/soyuz.hh>
+#include <soyuz/tray.hh>
+#include <soyuz/windows.hh>
 
 namespace soyuz {
 
