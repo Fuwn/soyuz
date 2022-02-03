@@ -1,6 +1,12 @@
 // Copyright (C) 2021-2021 Fuwn
 // SPDX-License-Identifier: GPL-3.0-only
 
+/**
+ * @file   windows.hh
+ * @author Fuwn
+ * @date   2021. August. 18.
+ */
+
 #ifndef SOYUZ_WINDOWS_HH
 #define SOYUZ_WINDOWS_HH
 #pragma once
