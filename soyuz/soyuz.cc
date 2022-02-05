@@ -76,6 +76,11 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int show) {
     DWORD pid = soyuz::find_lunar();
     if (pid == 0 || pid == 3435973836) {
       soyuz::log("could not locate lunar client");
+      soyuz::log("this window will close in five seconds");
+      for (int i = 4; i > -1; --i) {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+        soyuz::log(fmt::format("> {} second{}", soyuz::numbers_as_string[i], i != 1 ? "s" : ""));
+      }
 
       soyuz::exit(1);
     }

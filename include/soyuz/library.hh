@@ -25,6 +25,14 @@ namespace soyuz {
 //   high,   // red
 // };
 
+const std::string numbers_as_string[] = {
+  "zero",
+  "one",
+  "two",
+  "three",
+  "four",
+};
+
 static BOOL CALLBACK enum_windows_proc(HWND, LPARAM);
 auto find_lunar() -> DWORD;
 auto delete_handle(DWORD) -> int;
