@@ -84,7 +84,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int show) {
 
       soyuz::exit(1);
     }
-    soyuz::log(fmt::format("located lunar client: pid {}", GetLastError()));
+    soyuz::log(fmt::format("located lunar client: pid {}", pid)); // GetLastError()
     soyuz::log("hooked lunar client"); soyuz::log("you may now close this window");
 
     while (!stop.stop_requested()) {
