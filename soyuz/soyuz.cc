@@ -88,7 +88,6 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int show) {
     soyuz::log("hooked lunar client"); soyuz::log("you may now close this window");
 
     while (!stop.stop_requested()) {
-
       /**
        * Check if Lunar Client is open before every `delete_handle` run, if not; timeout
        *
@@ -113,9 +112,10 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int show) {
   }
 
   soyuz::log("requesting exit");
-  soyuz.request_stop(); soyuz.join();
+  soyuz.request_stop(); soyuz.detach();
 
   soyuz::log("exiting");
   soyuz::close_log_file();
+
   return (int)messages.wParam;
 }
