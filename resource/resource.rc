@@ -1,4 +1,4 @@
-// Copyright (C) 2021-2021 Fuwn
+// Copyright (C) 2021-2022 Fuwn
 // SPDX-License-Identifier: GPL-3.0-only
 
 #include "soyuz/resource.hh"
@@ -28,7 +28,7 @@ VALUE "CompanyName", "Fuwn Technologies\0"
 VALUE "FileDescription", "Discord RPC Blocker for Lunar Client\0"
 VALUE "FileVersion", "1,0,0,0\0"
 VALUE "InternalName", "Soyuz\0"
-VALUE "LegalCopyright", "Copyright (C) 2021-2021 Fuwn\0"
+VALUE "LegalCopyright", "Copyright (C) 2021-2022 Fuwn\0"
 VALUE "LegalTrademarks", "\0"
 VALUE "OriginalFilename", "soyuz.exe\0"
 VALUE "PrivateBuild", "1\0"

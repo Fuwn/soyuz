@@ -1,4 +1,4 @@
-// Copyright (C) 2021-2021 Fuwn
+// Copyright (C) 2021-2022 Fuwn
 // SPDX-License-Identifier: GPL-3.0-only
 
 /**
@@ -13,6 +13,6 @@
 
 #define LUNAR_WINDOW_NAME_BASE "Lunar Client ("
 #define DISCORD_IPC_NAMED_PIPE_NAME L"\\Device\\NamedPipe\\discord-ipc-0"
-#define WINDOW_TRAY_NAME "Soyuz - 1.1.2 | Copyright (C) 2021-2021 Fuwn"
+#define WINDOW_TRAY_NAME "Soyuz - 1.1.2 | Copyright (C) 2021-2022 Fuwn"
 
 #endif //SOYUZ_SOYUZ_HH
