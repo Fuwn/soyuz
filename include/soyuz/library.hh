@@ -13,17 +13,12 @@
 
 #include <string>
 #include <Windows.h>
+#include <vector>
 
 #define NT_SUCCESS(status) (status >= 0)
 #define STATUS_INFO_LENGTH_MISMATCH ((NTSTATUS)0xC0000004L)
 
 namespace soyuz {
-
-// enum log_level {
-//   low,    // blue
-//   medium, // orange
-//   high,   // red
-// };
 
 const std::string numbers_as_string[] = {
   "zero",
@@ -31,6 +26,23 @@ const std::string numbers_as_string[] = {
   "two",
   "three",
   "four",
+};
+
+enum log_level {
+  trace,
+  debug,
+  info,
+  warn,
+  error,
+};
+
+struct log_t {
+  log_level   level;
+  std::string value;
+
+  log_t(log_level level, std::string value) : level(level), value(std::move(value)) {}
+
+  auto to_coloref() -> COLORREF;
 };
 
 static BOOL CALLBACK enum_windows_proc(HWND, LPARAM);
