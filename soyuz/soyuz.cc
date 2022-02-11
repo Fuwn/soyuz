@@ -75,17 +75,17 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int show) {
     // Check if Lunar Client is open, if not; close Soyuz
     DWORD pid = soyuz::find_lunar();
     if (pid == 0 || pid == 3435973836) {
-      soyuz::log("could not locate lunar client");
-      soyuz::log("this window will close in five seconds");
+      soyuz::log(soyuz::log_level::error, "could not locate lunar client");
+      soyuz::log(soyuz::log_level::warn, "this window will close in five seconds");
       for (int i = 4; i > -1; --i) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
-        soyuz::log(fmt::format("> {} second{}", soyuz::numbers_as_string[i], i != 1 ? "s" : ""));
+        soyuz::log(soyuz::log_level::warn, fmt::format("> {} second{}", soyuz::numbers_as_string[i], i != 1 ? "s" : ""));
       }
 
       soyuz::exit(1);
     }
-    soyuz::log(fmt::format("located lunar client: pid {}", pid)); // GetLastError()
-    soyuz::log("hooked lunar client"); soyuz::log("you may now close this window");
+    soyuz::log(soyuz::log_level::info, fmt::format("located lunar client: pid {}", pid)); // GetLastError()
+    soyuz::log(soyuz::log_level::info, "hooked lunar client"); soyuz::log(soyuz::log_level::info, "you may now close this window");
 
     while (!stop.stop_requested()) {
       /**
@@ -95,13 +95,13 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int show) {
        */
       pid = soyuz::find_lunar();
       if (pid == 0 || pid == 3435973836) {
-        soyuz::log("could not locate lunar client, waiting 10 seconds");
+        soyuz::log(soyuz::log_level::warn, "could not locate lunar client, waiting 10 seconds");
         std::this_thread::sleep_for(std::chrono::seconds(10));
       }
 
       // If Lunar Client **is** open, close it's Discord IPC Named Pipe
       if (soyuz::delete_handle(pid) == 1) {
-        soyuz::log("unable to close lunar client's discord ipc named pipe");
+        soyuz::log(soyuz::log_level::warn, "unable to close lunar client's discord ipc named pipe");
       }
     }
   }};
@@ -111,10 +111,10 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int show) {
     DispatchMessage(&messages);
   }
 
-  soyuz::log("requesting exit");
+  soyuz::log(soyuz::log_level::info, "requesting exit");
   soyuz.request_stop(); soyuz.detach();
 
-  soyuz::log("exiting");
+  soyuz::log(soyuz::log_level::info, "exiting");
   soyuz::close_log_file();
 
   return (int)messages.wParam;
