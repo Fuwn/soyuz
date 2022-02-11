@@ -62,7 +62,7 @@ auto delete_handle(DWORD pid) -> int {
     pid
   );
   if (!lunar) {
-    soyuz::log(fmt::format("could not open handle to lunar client: {}", GetLastError()));
+    soyuz::log(soyuz::log_level::warn, fmt::format("could not open handle to lunar client: {}", GetLastError()));
 
     return 1;
   }
@@ -83,7 +83,7 @@ auto delete_handle(DWORD pid) -> int {
     if (NT_SUCCESS(status)) { break; }
     if (status == STATUS_INFO_LENGTH_MISMATCH) { size += 1 << 10; continue; }
 
-    soyuz::log("could not enumerate handle, skipping");
+    soyuz::log(soyuz::log_level::debug, "could not enumerate handle, skipping");
 
     return 1;
   }
@@ -121,7 +121,7 @@ auto delete_handle(DWORD pid) -> int {
 
     auto *name = reinterpret_cast<UNICODE_STRING *>(name_buffer);
     if (name->Buffer && _wcsnicmp(name->Buffer, target_name, length) == 0) {
-      soyuz::log("found lunar client's discord ipc named pipe");
+      soyuz::log(soyuz::log_level::info, "found lunar client's discord ipc named pipe");
 
       DuplicateHandle(
         lunar,
@@ -134,7 +134,7 @@ auto delete_handle(DWORD pid) -> int {
       );
       CloseHandle(target);
 
-      soyuz::log("closed lunar client's discord ipc named pipe");
+      soyuz::log(soyuz::log_level::info, "closed lunar client's discord ipc named pipe");
 
       return 0;
     }
@@ -155,11 +155,11 @@ auto init_log_file() -> void {
 //    return;
 //  }
 
-  soyuz::log("opened 'soyuz.log'");
+  soyuz::log(soyuz::log_level::debug, "opened 'soyuz.log'");
 }
 
 auto close_log_file() -> void {
-  soyuz::log("closing 'soyuz.log'"); log_file.close();
+  soyuz::log(soyuz::log_level::debug, "closing 'soyuz.log'"); log_file.close();
 }
 
 auto exit(int exit_code) -> void {
