@@ -22,7 +22,7 @@ HMENU menu;
 NOTIFYICONDATA data;
 TCHAR tip[64] =     TEXT(WINDOW_TRAY_NAME);
 char class_name[] = WINDOW_TRAY_NAME;
-std::vector<std::string> logs;
+std::vector<soyuz::log_t> logs;
 
 LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) {
   if (message == WM_TASKBAR && !IsWindowVisible(window)) {
@@ -42,9 +42,10 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
       GetClientRect(hwnd, &rect);
 
       int height = 5;
-      for (const auto &i : logs) {
-         TextOut(hdc, 5, height, i.c_str(), (int)strlen(i.c_str()));
-         height += 20;
+      for (soyuz::log_t &i : logs) {
+        SetTextColor(hdc, i.to_coloref());
+        TextOut(hdc, 5, height, i.value.c_str(), (int)strlen(i.value.c_str()));
+        height += 20;
       }
 
       EndPaint(window, &ps);
@@ -141,7 +142,16 @@ auto log(const std::string &message) -> void {
 
   std::string to_log = fmt::format("[{}] {}", current_date_time(), message);
 
-  LOG(to_log.c_str()) write_log_file(to_log);
+  logs.emplace_back(log_t(log_level::info, to_log)); write_log_file(to_log);
+  RedrawWindow(window, nullptr, nullptr, RDW_INVALIDATE | RDW_UPDATENOW);
+}
+
+auto log(log_level level, const std::string &message) -> void {
+  if (logs.size() == 16) { logs.erase(logs.begin()); }
+
+  std::string to_log = fmt::format("[{}] {}", current_date_time(), message);
+
+  logs.emplace_back(log_t(level, to_log)); write_log_file(to_log);
   RedrawWindow(window, nullptr, nullptr, RDW_INVALIDATE | RDW_UPDATENOW);
 }
 
