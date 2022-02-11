@@ -15,7 +15,7 @@
 #include <vector>
 #include <Windows.h>
 
-#define LOG(message) logs.emplace_back(message);
+#include <soyuz/library.hh>
 
 LRESULT CALLBACK WindowProcedure(HWND, UINT, WPARAM, LPARAM);
 auto minimize() -> void;
@@ -25,6 +25,7 @@ auto InitNotifyIconData() -> void;
 namespace soyuz {
 
 auto log(const std::string &) -> void;
+auto log(log_level, const std::string &) -> void;
 
 }
 

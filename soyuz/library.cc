@@ -178,4 +178,15 @@ auto current_date_time() -> std::string {
   return buffer;
 }
 
+auto log_t::to_coloref() -> COLORREF {
+  switch (this->level) {
+    case trace: { return 0x00FF0000; } // blue
+    case debug: { return 0x0000FF00; } // green
+    case info:  { return 0x00000000; } // black
+    case warn:  { return 0x000080FF; } // orange
+    case error: { return 0x000000FF; } // red
+    default:    { return 0x00000000; } // black
+  }
+}
+
 }
