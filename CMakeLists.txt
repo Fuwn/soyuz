@@ -58,7 +58,6 @@ if(WIN32) # windows
 		"soyuz/library.cc"
 		"soyuz/soyuz.cc"
 		"soyuz/tray.cc"
-		"soyuz/windows.cc"
 		"resource/resource.rc"
 	)
 endif()
