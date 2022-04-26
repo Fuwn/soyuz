@@ -62,7 +62,7 @@ auto delete_handle(DWORD pid) -> int {
     pid
   );
   if (!lunar) {
-    soyuz::log(soyuz::log_level::warn, fmt::format("could not open handle to lunar client: {}", GetLastError()));
+    soyuz::log(soyuz::log_level::LOG_LEVEL_WARN, fmt::format("could not open handle to lunar client: {}", GetLastError()));
 
     return 1;
   }
@@ -83,7 +83,7 @@ auto delete_handle(DWORD pid) -> int {
     if (NT_SUCCESS(status)) { break; }
     if (status == STATUS_INFO_LENGTH_MISMATCH) { size += 1 << 10; continue; }
 
-    soyuz::log(soyuz::log_level::debug, "could not enumerate handle, skipping");
+    soyuz::log(soyuz::log_level::LOG_LEVEL_DEBUG, "could not enumerate handle, skipping");
 
     return 1;
   }
@@ -121,7 +121,7 @@ auto delete_handle(DWORD pid) -> int {
 
     auto *name = reinterpret_cast<UNICODE_STRING *>(name_buffer);
     if (name->Buffer && _wcsnicmp(name->Buffer, target_name, length) == 0) {
-      soyuz::log(soyuz::log_level::info, "found lunar client's discord ipc named pipe");
+      soyuz::log(soyuz::log_level::LOG_LEVEL_INFO, "found lunar client's discord ipc named pipe");
 
       DuplicateHandle(
         lunar,
@@ -134,7 +134,7 @@ auto delete_handle(DWORD pid) -> int {
       );
       CloseHandle(target);
 
-      soyuz::log(soyuz::log_level::info, "closed lunar client's discord ipc named pipe");
+      soyuz::log(soyuz::log_level::LOG_LEVEL_INFO, "closed lunar client's discord ipc named pipe");
 
       return 0;
     }
@@ -155,11 +155,11 @@ auto init_log_file() -> void {
 //    return;
 //  }
 
-  soyuz::log(soyuz::log_level::debug, "opened 'soyuz.log'");
+  soyuz::log(soyuz::log_level::LOG_LEVEL_DEBUG, "opened 'soyuz.log'");
 }
 
 auto close_log_file() -> void {
-  soyuz::log(soyuz::log_level::debug, "closing 'soyuz.log'"); log_file.close();
+  soyuz::log(soyuz::log_level::LOG_LEVEL_DEBUG, "closing 'soyuz.log'"); log_file.close();
 }
 
 auto exit(int exit_code) -> void {
@@ -178,13 +178,13 @@ auto current_date_time() -> std::string {
   return buffer;
 }
 
-auto log_t::to_coloref() -> COLORREF {
+auto log_t::to_colorref() -> COLORREF {
   switch (this->level) {
-    case trace: { return 0x00FF0000; } // blue
-    case debug: { return 0x0000FF00; } // green
-    case info:  { return 0x00000000; } // black
-    case warn:  { return 0x000080FF; } // orange
-    case error: { return 0x000000FF; } // red
+    case LOG_LEVEL_TRACE: { return 0x00FF0000; } // blue
+    case LOG_LEVEL_DEBUG: { return 0x0000FF00; } // green
+    case LOG_LEVEL_INFO:  { return 0x00000000; } // black
+    case LOG_LEVEL_WARN:  { return 0x000080FF; } // orange
+    case LOG_LEVEL_ERROR: { return 0x000000FF; } // red
     default:    { return 0x00000000; } // black
   }
 }

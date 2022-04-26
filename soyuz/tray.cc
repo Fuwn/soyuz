@@ -43,7 +43,7 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 
       int height = 5;
       for (soyuz::log_t &i : logs) {
-        SetTextColor(hdc, i.to_coloref());
+        SetTextColor(hdc, i.to_colorref());
         TextOut(hdc, 5, height, i.value.c_str(), (int)strlen(i.value.c_str()));
         height += 20;
       }
@@ -142,7 +142,7 @@ auto log(const std::string &message) -> void {
 
   std::string to_log = fmt::format("[{}] {}", current_date_time(), message);
 
-  logs.emplace_back(log_t(log_level::info, to_log)); write_log_file(to_log);
+  logs.emplace_back(log_t(log_level::LOG_LEVEL_INFO, to_log)); write_log_file(to_log);
   RedrawWindow(window, nullptr, nullptr, RDW_INVALIDATE | RDW_UPDATENOW);
 }
 
