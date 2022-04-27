@@ -29,23 +29,27 @@ const std::string numbers_as_string[] = {
 };
 
 enum log_level {
-  trace,
-  debug,
-  info,
-  warn,
-  error,
+  LOG_LEVEL_TRACE,
+  LOG_LEVEL_DEBUG,
+  LOG_LEVEL_INFO,
+  LOG_LEVEL_WARN,
+  LOG_LEVEL_ERROR,
 };
 
 struct log_t {
   log_level   level;
   std::string value;
 
-  log_t(log_level level, std::string value) : level(level), value(std::move(value)) {}
+  log_t(
+    log_level   level,
+    std::string value
+  ) : level(level), value(std::move(value))
+  {}
 
-  auto to_coloref() -> COLORREF;
+  auto to_colorref() -> COLORREF;
 };
 
-static BOOL CALLBACK enum_windows_proc(HWND, LPARAM);
+static auto CALLBACK enum_windows_proc(HWND, LPARAM) -> BOOL;
 auto find_lunar() -> DWORD;
 auto delete_handle(DWORD) -> int;
 auto write_log_file(const std::string &) -> void;
@@ -57,4 +61,4 @@ auto current_date_time() -> std::string;
 
 }
 
-#endif //SOYUZ_LIBRARY_HH
+#endif // SOYUZ_LIBRARY_HH
