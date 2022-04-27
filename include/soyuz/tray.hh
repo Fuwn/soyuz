@@ -17,7 +17,7 @@
 
 #include <soyuz/library.hh>
 
-LRESULT CALLBACK WindowProcedure(HWND, UINT, WPARAM, LPARAM);
+auto CALLBACK WindowProcedure(HWND, UINT, WPARAM, LPARAM) -> LRESULT;
 auto minimize() -> void;
 auto restore() -> void;
 auto InitNotifyIconData() -> void;
@@ -29,4 +29,4 @@ auto log(log_level, const std::string &) -> void;
 
 }
 
-#endif //SOYUZ_TRAY_HH
+#endif // SOYUZ_TRAY_HH

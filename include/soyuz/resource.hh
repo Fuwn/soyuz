@@ -14,9 +14,9 @@
 #include <shellapi.h>
 #include <Windows.h>
 
-#define ICO1              101
-#define ID_TRAY_APP_ICON  1001
-#define ID_TRAY_EXIT      1002
-#define WM_SYSICON        (WM_USER + 1)
+#define ICO1 101
+#define ID_TRAY_APP_ICON 1001
+#define ID_TRAY_EXIT 1002
+#define WM_SYSICON (WM_USER + 1)
 
-#endif //SOYUZ_RESOURCE_HH
+#endif // SOYUZ_RESOURCE_HH
