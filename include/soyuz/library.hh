@@ -46,7 +46,7 @@ struct log_t {
   ) : level(level), value(std::move(value))
   {}
 
-  auto to_colorref() -> COLORREF;
+  [[nodiscard]] auto to_colorref() const -> COLORREF;
 };
 
 static auto CALLBACK enum_windows_proc(HWND, LPARAM) -> BOOL;
