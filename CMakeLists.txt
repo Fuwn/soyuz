@@ -53,14 +53,12 @@ FetchContent_MakeAvailable(fmt)
 set(CMKR_TARGET soyuz)
 set(soyuz_SOURCES "")
 
-if(WIN32) # windows
-	list(APPEND soyuz_SOURCES
-		"soyuz/library.cc"
-		"soyuz/soyuz.cc"
-		"soyuz/tray.cc"
-		"resource/resource.rc"
-	)
-endif()
+list(APPEND soyuz_SOURCES
+	"soyuz/library.cc"
+	"soyuz/soyuz.cc"
+	"soyuz/tray.cc"
+	"resource/resource.rc"
+)
 
 list(APPEND soyuz_SOURCES
 	cmake.toml
@@ -80,17 +78,10 @@ endif()
 
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${soyuz_SOURCES})
 
-target_compile_features(soyuz PRIVATE
-	cxx_std_20
-	cxx_return_type_deduction
+target_compile_options(soyuz PRIVATE
+	"/W4"
+	"/WX"
 )
-
-if(MSVC) # msvc
-	target_compile_options(soyuz PRIVATE
-		"/W4"
-		"/WX"
-	)
-endif()
 
 target_include_directories(soyuz PRIVATE
 	"include/"
@@ -101,12 +92,12 @@ target_link_libraries(soyuz PRIVATE
 )
 
 set_target_properties(soyuz PROPERTIES
-	CXX_STANDARD
-		20
-	CXX_STANDARD_REQUIRED
-		ON
 	CMAKE_CXX_EXTENSIONS
 		OFF
+	CXX_STANDARD
+		23
+	CXX_STANDARD_REQUIRED
+		ON
 	WIN32_EXECUTABLE
 		ON
 )
