@@ -134,8 +134,14 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int show) {
       if (soyuz::delete_handle(pid) == 1) {
         soyuz::log(
           soyuz::log_level::LOG_LEVEL_WARN,
-          "unable to close lunar client's discord ipc named pipe"
+          "unable to close lunar client's discord ipc named pipe,"
         );
+        soyuz::log(
+          soyuz::log_level::LOG_LEVEL_WARN,
+          "> waiting 10 seconds"
+        );
+
+        std::this_thread::sleep_for(std::chrono::seconds(10));
       }
     }
   }};
