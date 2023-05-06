@@ -1,20 +1,15 @@
-// Copyright (C) 2021-2022 Fuwn
+// Copyright (C) 2021-2023 Fuwn
 // SPDX-License-Identifier: GPL-3.0-only
-
-/**
- * @file   library.cc
- * @author Fuwn
- * @date   2021. August. 18.
- */
 
 #include <soyuz/library.hh>
 
+#include <Windows.h>
 #include <cstdio>
 #include <fmt/format.h>
 #include <fmt/os.h>
 #include <memory>
 #include <string>
-#include <Windows.h>
+
 
 #include <soyuz/soyuz.hh>
 #include <soyuz/tray.hh>
@@ -60,51 +55,41 @@ auto find_lunar() -> DWORD {
 }
 
 auto delete_handle(DWORD pid) -> int {
-  HANDLE lunar = OpenProcess(
-    PROCESS_QUERY_INFORMATION | PROCESS_DUP_HANDLE,
-    FALSE,
-    pid
-  );
+  HANDLE lunar =
+      OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_DUP_HANDLE, FALSE, pid);
   ULONG size = 1 << 10;
-  std::unique_ptr<BYTE []> buffer;
+  std::unique_ptr<BYTE[]> buffer;
 
   if (!lunar) {
-    soyuz::log(
-      soyuz::log_level::LOG_LEVEL_WARN,
-      fmt::format(
-        "could not open handle to lunar client: {}",
-        GetLastError()
-      )
-    );
+    soyuz::log(soyuz::log_level::LOG_LEVEL_WARN,
+               fmt::format("could not open handle to lunar client: {}",
+                           GetLastError()));
 
     return 1;
   }
 
   for (;;) {
-    buffer = std::make_unique<BYTE []>(size);
+    buffer = std::make_unique<BYTE[]>(size);
 
-    NTSTATUS status = NtQueryInformationProcess(
-      lunar,
-      ProcessHandleInformation,
-      buffer.get(),
-      size,
-      &size
-    );
+    NTSTATUS status = NtQueryInformationProcess(lunar, ProcessHandleInformation,
+                                                buffer.get(), size, &size);
 
-    if (NT_SUCCESS(status)) { break; }
-    if (status == STATUS_INFO_LENGTH_MISMATCH) { size += 1 << 10; continue; }
+    if (NT_SUCCESS(status)) {
+      break;
+    }
+    if (status == STATUS_INFO_LENGTH_MISMATCH) {
+      size += 1 << 10;
+      continue;
+    }
 
-    soyuz::log(
-      soyuz::log_level::LOG_LEVEL_DEBUG,
-      "could not enumerate handle, skipping"
-    );
+    soyuz::log(soyuz::log_level::LOG_LEVEL_DEBUG,
+               "could not enumerate handle, skipping");
 
     return 1;
   }
 
-  auto *info = reinterpret_cast<PROCESS_HANDLE_SNAPSHOT_INFORMATION *>(
-    buffer.get()
-  );
+  auto *info =
+      reinterpret_cast<PROCESS_HANDLE_SNAPSHOT_INFORMATION *>(buffer.get());
 
   for (ULONG i = 0; i < info->NumberOfHandles; ++i) {
     HANDLE h = info->Handles[i].HandleValue;
@@ -113,27 +98,19 @@ auto delete_handle(DWORD pid) -> int {
     WCHAR target_name[256];
     DWORD session_id;
 
-    if (!DuplicateHandle(
-      lunar,
-      h,
-      GetCurrentProcess(),
-      &target,
-      0,
-      FALSE,
-      DUPLICATE_SAME_ACCESS
-    )) { continue; }
+    if (!DuplicateHandle(lunar, h, GetCurrentProcess(), &target, 0, FALSE,
+                         DUPLICATE_SAME_ACCESS)) {
+      continue;
+    }
 
-    NTSTATUS status = NtQueryObject(
-      target,
-      ObjectNameInformation,
-      name_buffer,
-      sizeof(name_buffer),
-      nullptr
-    );
+    NTSTATUS status = NtQueryObject(target, ObjectNameInformation, name_buffer,
+                                    sizeof(name_buffer), nullptr);
 
     CloseHandle(target);
 
-    if (!NT_SUCCESS(status)) { continue; }
+    if (!NT_SUCCESS(status)) {
+      continue;
+    }
 
     ProcessIdToSessionId(pid, &session_id);
     swprintf_s(target_name, DISCORD_IPC_NAMED_PIPE_NAME);
@@ -142,24 +119,13 @@ auto delete_handle(DWORD pid) -> int {
     auto *name = reinterpret_cast<UNICODE_STRING *>(name_buffer);
 
     if (name->Buffer && _wcsnicmp(name->Buffer, target_name, length) == 0) {
-      soyuz::log(
-        soyuz::log_level::LOG_LEVEL_INFO,
-        "found lunar client's discord ipc named pipe"
-      );
-      DuplicateHandle(
-        lunar,
-        h,
-        GetCurrentProcess(),
-        &target,
-        0,
-        FALSE,
-        DUPLICATE_CLOSE_SOURCE
-      );
+      soyuz::log(soyuz::log_level::LOG_LEVEL_INFO,
+                 "found lunar client's discord ipc named pipe");
+      DuplicateHandle(lunar, h, GetCurrentProcess(), &target, 0, FALSE,
+                      DUPLICATE_CLOSE_SOURCE);
       CloseHandle(target);
-      soyuz::log(
-        soyuz::log_level::LOG_LEVEL_INFO,
-        "closed lunar client's discord ipc named pipe"
-      );
+      soyuz::log(soyuz::log_level::LOG_LEVEL_INFO,
+                 "closed lunar client's discord ipc named pipe");
 
       return 0;
     }
@@ -173,12 +139,12 @@ auto write_log_file(const std::string &message) -> void {
 }
 
 auto init_log_file() -> void {
-//  if (!log_file.is_open()) {
-//    soyuz::log("could not open 'soyuz.log'");
-//    soyuz::log("proceeding without logging to file");
-//
-//    return;
-//  }
+  //  if (!log_file.is_open()) {
+  //    soyuz::log("could not open 'soyuz.log'");
+  //    soyuz::log("proceeding without logging to file");
+  //
+  //    return;
+  //  }
 
   soyuz::log(soyuz::log_level::LOG_LEVEL_DEBUG, "opened 'soyuz.log'");
 }
@@ -208,13 +174,25 @@ auto current_date_time() -> std::string {
 
 auto log_t::to_colorref() const -> COLORREF {
   switch (this->level) {
-    case LOG_LEVEL_TRACE: { return 0x00FF0000; } // blue
-    case LOG_LEVEL_DEBUG: { return 0x0000FF00; } // green
-    case LOG_LEVEL_INFO:  { return 0x00000000; } // black
-    case LOG_LEVEL_WARN:  { return 0x000080FF; } // orange
-    case LOG_LEVEL_ERROR: { return 0x000000FF; } // red
-    default:              { return 0x00000000; } // black
+  case LOG_LEVEL_TRACE: {
+    return 0x00FF0000;
+  } // blue
+  case LOG_LEVEL_DEBUG: {
+    return 0x0000FF00;
+  } // green
+  case LOG_LEVEL_INFO: {
+    return 0x00000000;
+  } // black
+  case LOG_LEVEL_WARN: {
+    return 0x000080FF;
+  } // orange
+  case LOG_LEVEL_ERROR: {
+    return 0x000000FF;
+  } // red
+  default: {
+    return 0x00000000;
+  } // black
   }
 }
 
-}
+} // namespace soyuz
