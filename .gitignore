@@ -1,7 +1,13 @@
-# IDE
-/.idea/
+# CLion
+.idea
 
 # CMake
-/cmake-build-*
-/build/
-/deps/
+cmake-build-*
+build
+deps
+
+# Soyuz
+soyuz.log
+
+# Visual Studio Code
+.vscode
