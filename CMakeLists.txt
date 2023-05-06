@@ -32,7 +32,7 @@ project(soyuz
 		CXX
 		C
 	VERSION
-		1.1.2
+		1.1.4
 	DESCRIPTION
 		"🚀 Discord RPC Blocker for Lunar Client"
 )
