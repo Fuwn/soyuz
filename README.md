@@ -18,10 +18,8 @@ Prebuilt binaries are located in the
 ### Building from source
 
 ```powershell
-mkdir build
-cd .\build\
-cmake ..
-& "C:\Program Files\Microsoft Visual Studio\2022\Community\Msbuild\Current\Bin\MSBuild.exe" .\soyuz.sln /property:Configuration=MinSizeRel -m
+cmake -B build
+cmake --build build
 ```
 
 ## "Startup" Support
