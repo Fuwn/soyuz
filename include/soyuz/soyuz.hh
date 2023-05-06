@@ -1,11 +1,5 @@
-// Copyright (C) 2021-2022 Fuwn
+// Copyright (C) 2021-2023 Fuwn
 // SPDX-License-Identifier: GPL-3.0-only
-
-/**
- * @file   soyuz.hh
- * @author Fuwn
- * @date   2021. August. 18.
- */
 
 #ifndef SOYUZ_SOYUZ_HH
 #define SOYUZ_SOYUZ_HH

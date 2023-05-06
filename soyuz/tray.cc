@@ -1,11 +1,5 @@
-// Copyright (C) 2021-2022 Fuwn
+// Copyright (C) 2021-2023 Fuwn
 // SPDX-License-Identifier: GPL-3.0-only
-
-/**
- * @file   tray.cc
- * @author Fuwn
- * @date   2021. August. 18.
- */
 
 #include <soyuz/tray.hh>
 
@@ -24,12 +18,8 @@ TCHAR tip[64] = TEXT(WINDOW_TRAY_NAME);
 char class_name[] = WINDOW_TRAY_NAME;
 std::vector<soyuz::log_t> logs;
 
-auto CALLBACK WindowProcedure(
-  HWND   hwnd,
-  UINT   message,
-  WPARAM wParam,
-  LPARAM lParam
-) -> LRESULT {
+auto CALLBACK WindowProcedure(HWND hwnd, UINT message, WPARAM wParam,
+                              LPARAM lParam) -> LRESULT {
   if (message == WM_TASKBAR && !IsWindowVisible(window)) {
     minimize();
 
@@ -37,89 +27,91 @@ auto CALLBACK WindowProcedure(
   }
 
   switch (message) {
-    case WM_ACTIVATE: { Shell_NotifyIcon(NIM_ADD, &data); } break;
+  case WM_ACTIVATE: {
+    Shell_NotifyIcon(NIM_ADD, &data);
+  } break;
 
-    case WM_PAINT: {
-      PAINTSTRUCT ps;
-      RECT rect;
-      HDC hdc = BeginPaint(window, &ps);
-      int height = 5;
+  case WM_PAINT: {
+    PAINTSTRUCT ps;
+    RECT rect;
+    HDC hdc = BeginPaint(window, &ps);
+    int height = 5;
 
-      GetClientRect(hwnd, &rect);
+    GetClientRect(hwnd, &rect);
 
-      for (soyuz::log_t &log : logs) {
-        SetTextColor(hdc, log.to_colorref());
-        TextOut(
-          hdc,
-          5,
-          height,
-          log.value.c_str(),
-          (int)strlen(log.value.c_str())
-        );
+    for (soyuz::log_t &log : logs) {
+      SetTextColor(hdc, log.to_colorref());
+      TextOut(hdc, 5, height, log.value.c_str(),
+              (int)strlen(log.value.c_str()));
 
-        height += 20;
-      }
-
-      EndPaint(window, &ps);
-    } break;
-
-    case WM_CREATE: {
-      ShowWindow(window, SW_HIDE);
-
-      menu = CreatePopupMenu();
-
-      AppendMenu(menu, MF_STRING, ID_TRAY_EXIT, TEXT("Exit Soyuz"));
-    } break;
-
-    case WM_SYSCOMMAND:
-      switch(wParam & 0xFFF0) {
-        case SC_MINIMIZE:
-        case SC_CLOSE: { minimize(); return 0; } // break;
-      } break;
-
-    case WM_SYSICON: {
-      if (wParam == ID_TRAY_APP_ICON) { SetForegroundWindow(window); }
-
-      if (lParam == WM_LBUTTONUP) {
-        restore();
-      } else if (lParam == WM_RBUTTONDOWN) {
-        POINT curPoint;
-
-        GetCursorPos(&curPoint);
-        SetForegroundWindow(window);
-
-        UINT clicked = TrackPopupMenu(
-          menu,
-          TPM_RETURNCMD | TPM_NONOTIFY,
-          curPoint.x,
-          curPoint.y,
-          0,
-          hwnd,
-          nullptr
-        );
-
-        SendMessage(hwnd, WM_NULL, 0, 0);
-
-        if (clicked == ID_TRAY_EXIT) {
-          Shell_NotifyIcon(NIM_DELETE, &data);
-          PostQuitMessage(0);
-        }
-      }
-    } break;
-
-    case WM_NCHITTEST: {
-      LRESULT uHitTest = DefWindowProc(hwnd, WM_NCHITTEST, wParam, lParam);
-
-      if (uHitTest == HTCLIENT) {
-        return HTCAPTION;
-      } else {
-        return uHitTest;
-      }
+      height += 20;
     }
 
-    case WM_CLOSE: { minimize(); return 0; } // break;
-    case WM_DESTROY: { PostQuitMessage(0); } break;
-    default: {} break;
+    EndPaint(window, &ps);
+  } break;
+
+  case WM_CREATE: {
+    ShowWindow(window, SW_HIDE);
+
+    menu = CreatePopupMenu();
+
+    AppendMenu(menu, MF_STRING, ID_TRAY_EXIT, TEXT("Exit Soyuz"));
+  } break;
+
+  case WM_SYSCOMMAND:
+    switch (wParam & 0xFFF0) {
+    case SC_MINIMIZE:
+    case SC_CLOSE: {
+      minimize();
+      return 0;
+    } // break;
+    }
+    break;
+
+  case WM_SYSICON: {
+    if (wParam == ID_TRAY_APP_ICON) {
+      SetForegroundWindow(window);
+    }
+
+    if (lParam == WM_LBUTTONUP) {
+      restore();
+    } else if (lParam == WM_RBUTTONDOWN) {
+      POINT curPoint;
+
+      GetCursorPos(&curPoint);
+      SetForegroundWindow(window);
+
+      UINT clicked = TrackPopupMenu(menu, TPM_RETURNCMD | TPM_NONOTIFY,
+                                    curPoint.x, curPoint.y, 0, hwnd, nullptr);
+
+      SendMessage(hwnd, WM_NULL, 0, 0);
+
+      if (clicked == ID_TRAY_EXIT) {
+        Shell_NotifyIcon(NIM_DELETE, &data);
+        PostQuitMessage(0);
+      }
+    }
+  } break;
+
+  case WM_NCHITTEST: {
+    LRESULT uHitTest = DefWindowProc(hwnd, WM_NCHITTEST, wParam, lParam);
+
+    if (uHitTest == HTCLIENT) {
+      return HTCAPTION;
+    } else {
+      return uHitTest;
+    }
+  }
+
+  case WM_CLOSE: {
+    minimize();
+    return 0;
+  } // break;
+  case WM_DESTROY: {
+    PostQuitMessage(0);
+  } break;
+  default: {
+  } break;
   }
 
   return DefWindowProc(hwnd, message, wParam, lParam);
@@ -144,7 +136,9 @@ void InitNotifyIconData() {
 namespace soyuz {
 
 [[maybe_unused]] auto log(const std::string &message) -> void {
-  if (logs.size() == 16) { logs.erase(logs.begin()); }
+  if (logs.size() == 16) {
+    logs.erase(logs.begin());
+  }
 
   std::string to_log = fmt::format("[{}] {}", current_date_time(), message);
 
@@ -154,7 +148,9 @@ namespace soyuz {
 }
 
 auto log(log_level level, const std::string &message) -> void {
-  if (logs.size() == 16) { logs.erase(logs.begin()); }
+  if (logs.size() == 16) {
+    logs.erase(logs.begin());
+  }
 
   std::string to_log = fmt::format("[{}] {}", current_date_time(), message);
 
@@ -163,4 +159,4 @@ auto log(log_level level, const std::string &message) -> void {
   RedrawWindow(window, nullptr, nullptr, RDW_INVALIDATE | RDW_UPDATENOW);
 }
 
-}
+} // namespace soyuz
