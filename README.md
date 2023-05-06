@@ -19,7 +19,8 @@ Prebuilt binaries are located in the
 
 ```powershell
 cmake -B build
-cmake --build build
+cmake --build build --config Release
+# .\build\Release\soyuz.exe
 ```
 
 ## "Startup" Support
