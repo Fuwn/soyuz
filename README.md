@@ -1,7 +1,9 @@
+> [!NOTE]
+> As of [December 19th, 2023](https://www.lunarclient.com/news/how-to-use-the-new-lunar-client-launcher), Lunar Client now has official capacity to disable Discord integration. It only took them nearly 5 years, but it's there.
+
 # 🚀 Soyuz
 
-Soyuz has one simple purpose; listen for incoming Discord RPC requests from
-Lunar Client and block them!
+Soyuz has one simple purpose, which is to listen for incoming Discord RPC requests from Lunar Client and block them!
 
 <a href="https://github.com/fuwn/soyuz">
  <img
